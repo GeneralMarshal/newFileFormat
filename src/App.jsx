@@ -1,17 +1,41 @@
-import {useRef} from "react"
+import {useEffect, useRef, useState} from "react"
 import './App.css'
 
 function App() {
   const videoRef = useRef()
-  return (
 
-    
+   useEffect(() => {
+    const videoElement = videoRef.current
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting){
+            videoElement.play()
+          } else {
+            videoElement.pause()
+          }
+        })
+      },
+      {threshold: 0.5}
+    )
+    if (videoElement){
+      observer.observe(videoElement)
+    }
+
+    return() => {
+      if(videoElement){
+        observer.unobserve(videoElement)
+      }
+    }
+   }, []);
+
+  return (
     <>
       <p className=" ">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium, illo nam dolores eligendi eum facere, quis beatae architecto culpa nisi ad nostrum! Maxime dicta velit aliquid, repudiandae laborum tempora pariatur placeat consequatur rerum in voluptas facilis fuga, veniam repellendus culpa illum. Odit dolorem corporis quae illo magni aliquam laudantium omnis at consectetur dolorum adipisci placeat voluptatibus quos, quibusdam distinctio fugiat nisi reprehenderit quas in culpa obcaecati neque et sunt. Dolorem suscipit ipsam voluptate, facere assumenda esse quibusdam unde architecto maxime non quidem? Qui eum incidunt magni voluptatem culpa consectetur, voluptate explicabo ipsa numquam praesentium, iure eaque assumenda doloribus itaque tempora dolorem ipsam facere. Cupiditate expedita nobis officia dolores itaque consectetur quis asperiores voluptatum alias. Iure vitae deserunt quidem corporis ratione! Quasi temporibus molestiae a fuga fugit est nobis nulla minus repellendus neque inventore nemo cumque nesciunt officiis, voluptatibus ratione perferendis similique unde pariatur, consequatur consequuntur ut? Natus iure atque amet dolores, illum, numquam qui fugiat error, adipisci eveniet perspiciatis libero exercitationem repellat beatae tempore officia inventore ad magni ipsam deleniti eum maiores velit cum sed! Natus eaque sapiente quidem distinctio ducimus repellendus unde consectetur modi mollitia inventore incidunt eum adipisci vel porro harum corrupti quas tenetur hic, earum consequatur ab.
       </p>
       <div className=' flex justify-center'>
-        <video className=" w-[150px] " ref={videoRef} >
+        <video className=" w-[150px] " ref={videoRef} muted loop>
           <source src="test_video.mp4" type="video/mp4" />
         </video>
       </div>
